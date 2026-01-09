@@ -535,15 +535,12 @@
 
                     if (!response) {
 
-                        console.log('API call failed');
+                        console.error('API call failed - response is null');
+                        console.error('API URL was:', `${this.apiUrl}/chat/widget/${this.embedToken}`);
                         
-                        // Provide helpful error message
-                        const isHttps = window.location.protocol === 'https:';
-                        if (isHttps) {
-                            this.addMessage('Sorry, I cannot connect to the server. The HTTPS endpoint may be blocked by a firewall. Please contact the administrator to ensure port 443 is open for HTTPS access.', 'assistant');
-                        } else {
-                            this.addMessage('Sorry, I encountered an error connecting to the server. Please try again.', 'assistant');
-                        }
+                        // Check if it's a network error or SSL issue
+                        // The error message will help diagnose
+                        this.addMessage('Sorry, I cannot connect to the server. Please check the browser console (F12) for detailed error information.', 'assistant');
                     }
 
                 } catch (error) {
@@ -612,7 +609,10 @@
 
                 } catch (error) {
 
-                    console.log('Streaming API call failed:', error.message);
+                    console.error('Streaming API call failed:', error);
+                    console.error('Error name:', error.name);
+                    console.error('Error message:', error.message);
+                    console.error('Error stack:', error.stack);
 
                     return null;
 
