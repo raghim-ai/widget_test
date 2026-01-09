@@ -103,7 +103,7 @@
         <!-- Raghim AI Chat Widget - Copy and paste this entire block into your HTML page -->
 <style>
 
-        #rag-widget-d669cfe8.rag-widget-modern {
+        #rag-widget-dc9a3e9c.rag-widget-modern {
             font-family: Inter, sans-serif;
             font-size: 14px;
             background-color: #ffffff;
@@ -195,6 +195,34 @@
             cursor: pointer;
         }
         
+        #rag-widget-dc9a3e9c .rag-widget-footer {
+            padding: 6px 12px;
+            text-align: right;
+            border-top: 1px solid #f0f0f0;
+            background-color: #fafafa;
+        }
+        
+        #rag-widget-dc9a3e9c .rag-powered-by {
+            font-size: 10px;
+            color: #999;
+            text-decoration: none;
+            display: inline-block;
+            transition: color 0.2s;
+        }
+        
+        #rag-widget-dc9a3e9c .rag-powered-by:hover {
+            color: #667eea;
+        }
+        
+        #rag-widget-dc9a3e9c .rag-powered-by strong {
+            font-weight: 600;
+            color: #666;
+        }
+        
+        #rag-widget-dc9a3e9c .rag-powered-by:hover strong {
+            color: #667eea;
+        }
+        
         .rag-welcome-message {
             background-color: #e3f2fd;
             padding: 10px;
@@ -210,19 +238,59 @@
             color: #764ba2;
         }
         
+        .rag-widget-toggle-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background-color: #667eea;
+            color: white;
+            border: none;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            cursor: pointer;
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        
+        .rag-widget-toggle-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 16px rgba(0,0,0,0.2);
+        }
+        
+        .rag-widget-toggle-btn:active {
+            transform: scale(0.95);
+        }
+        
+        .rag-widget-toggle-btn svg {
+            width: 28px;
+            height: 28px;
+        }
+        
         
         
 </style>
 
-<div id="rag-widget-d669cfe8" class="rag-widget-modern">
+<!-- Floating Toggle Button (shown when widget is minimized) -->
+<button id="rag-widget-dc9a3e9c-toggle-btn" class="rag-widget-toggle-btn" style="display: none;">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M20 2H4C2.9 2 2 2.9 2 4V22L6 18H20C21.1 18 22 17.1 22 16V4C22 2.9 21.1 2 20 2Z" fill="currentColor"/>
+    </svg>
+</button>
+
+<div id="rag-widget-dc9a3e9c" class="rag-widget-modern">
     <div class="rag-widget-header">
-        <h3>widget_demo</h3>
+        <h3>widget_for_demo</h3>
         <div class="rag-widget-controls">
             <button class="rag-minimize-btn">−</button>
             <button class="rag-close-btn">×</button>
         </div>
     </div>
-    <div class="rag-widget-messages" id="rag-widget-d669cfe8-messages">
+    <div class="rag-widget-messages" id="rag-widget-dc9a3e9c-messages">
         <div class="rag-welcome-message">
             <p>Hello! I'm ready to be of service.</p>
         </div>
@@ -230,6 +298,11 @@
     <div class="rag-widget-input">
         <input type="text" class="rag-message-input" placeholder="Type your message..." />
         <button class="rag-send-btn">Send</button>
+    </div>
+    <div class="rag-widget-footer">
+        <a href="https://raghim.com" target="_blank" rel="noopener noreferrer" class="rag-powered-by">
+            Powered by <strong>Raghim AI</strong>
+        </a>
     </div>
 </div>
 
@@ -249,8 +322,8 @@
                     
                     // Use the configured backend URL with mixed content bypass support
                     this.apiUrl = "http://34.65.50.3/api";
-                    this.embedToken = "1cvzyPA9oS8sW6SHZMIu4RTCk3jUEXgliSn3Je8KkIE";
-                    this.widgetId = "d669cfe8-f41b-421c-8ba5-334dfc57d205";
+                    this.embedToken = "5rlpacr6rqmUD1CXyc-GcDqbHdnelhVC2r_nM6TY8qc";
+                    this.widgetId = "dc9a3e9c-0e10-4e74-9429-a7b33755c7b9";
                     this.features = {"show_sources": true, "enable_history": true, "show_typing_indicator": true, "enable_file_upload": false, "show_collection_switcher": false, "enable_feedback": true, "show_timestamps": false, "enable_search": true, "enable_handoff": true};
                     this.conversationId = null; // Track conversation ID for history
                     this.isSending = false; // Add debouncing flag
@@ -268,12 +341,14 @@
                     this.sendButton = this.widgetElement.querySelector('.rag-send-btn');
                     this.minimizeButton = this.widgetElement.querySelector('.rag-minimize-btn');
                     this.closeButton = this.widgetElement.querySelector('.rag-close-btn');
+                    this.toggleButton = document.getElementById(this.widgetElementId + '-toggle-btn');
                     
                     if (!this.messageContainer || !this.messageInput || !this.sendButton) {
                         console.error('Widget elements not found');
                         return;
                     }
                     
+                    this.isMinimized = false;
                     this.bindEvents();
                 }
             
@@ -284,6 +359,9 @@
                 });
                 this.minimizeButton.addEventListener('click', () => this.minimize());
                 this.closeButton.addEventListener('click', () => this.close());
+                if (this.toggleButton) {
+                    this.toggleButton.addEventListener('click', () => this.toggle());
+                }
             }
             
             async sendMessage() {
@@ -578,6 +656,26 @@
             minimize() {
                 if (this.widgetElement) {
                     this.widgetElement.style.display = 'none';
+                    this.isMinimized = true;
+                    if (this.toggleButton) {
+                        this.toggleButton.style.display = 'flex';
+                    }
+                }
+            }
+            
+            toggle() {
+                if (this.isMinimized) {
+                    // Show widget
+                    if (this.widgetElement) {
+                        this.widgetElement.style.display = 'flex';
+                        this.isMinimized = false;
+                        if (this.toggleButton) {
+                            this.toggleButton.style.display = 'none';
+                        }
+                    }
+                } else {
+                    // Hide widget
+                    this.minimize();
                 }
             }
             
@@ -586,6 +684,9 @@
                 this.stopMessagePolling();
                 if (this.widgetElement) {
                     this.widgetElement.remove();
+                }
+                if (this.toggleButton) {
+                    this.toggleButton.remove();
                 }
             }
             
@@ -649,10 +750,10 @@
         // Initialize widget when DOM is ready
         if (document.readyState === 'loading') {
             document.addEventListener('DOMContentLoaded', function() {
-                new RAGChatWidget('rag-widget-d669cfe8');
+                new RAGChatWidget('rag-widget-dc9a3e9c');
             });
         } else {
-            new RAGChatWidget('rag-widget-d669cfe8');
+            new RAGChatWidget('rag-widget-dc9a3e9c');
         }
         })();
         
@@ -681,5 +782,6 @@
     </div>
 </body>
 </html>
+
 
 
