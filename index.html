@@ -410,8 +410,8 @@
                 
                 if (isHttps) {
                     // On HTTPS pages, MUST use HTTPS API (browsers block HTTP)
-                    // Using standard HTTPS port 443 (no port number needed)
-                    this.apiUrl = "https://34.65.50.3/api";
+                    // Using Cloudflare domain with valid SSL certificate
+                    this.apiUrl = "https://app.raghim.com/api";
                     this.fallbackApiUrl = null; // Can't fallback to HTTP from HTTPS page
                 } else {
                     // On HTTP pages, use HTTP API
