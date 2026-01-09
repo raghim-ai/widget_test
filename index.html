@@ -1,1105 +1,141 @@
 <!DOCTYPE html>
-
 <html lang="en">
-
 <head>
-
     <meta charset="UTF-8">
-
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>Raghim AI Widget Test</title>
-
+    <title>Widget Embed Template - Raghim AI</title>
     <style>
-
-        * {
-
-            margin: 0;
-
-            padding: 0;
-
-            box-sizing: border-box;
-
-        }
-
-        
-
         body {
-
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-
-            line-height: 1.6;
-
-            color: #333;
-
-            background: #f5f5f5;
-
-        }
-
-        
-
-        .container {
-
+            font-family: Arial, sans-serif;
             max-width: 1200px;
-
             margin: 0 auto;
-
-            padding: 2rem;
-
+            padding: 20px;
+            background-color: #f5f5f5;
         }
-
-        
-
-        header {
-
+        .container {
             background: white;
-
-            padding: 2rem;
-
-            margin-bottom: 2rem;
-
+            padding: 30px;
             border-radius: 8px;
-
             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-
         }
-
-        
-
         h1 {
-
-            color: #2c3e50;
-
-            margin-bottom: 0.5rem;
-
+            color: #333;
+            border-bottom: 2px solid #007bff;
+            padding-bottom: 10px;
         }
-
-        
-
-        .content {
-
-            background: white;
-
-            padding: 2rem;
-
+        .instructions {
+            background: #e3f2fd;
+            padding: 20px;
             border-radius: 8px;
-
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-
-            min-height: 400px;
-
+            margin: 20px 0;
+            border-left: 4px solid #2196F3;
         }
-
-        
-
-        /* Widget container styles */
-
-        #raghim-widget-container {
-
-            position: relative;
-
+        .instructions h2 {
+            margin-top: 0;
+            color: #1976D2;
         }
-
-        
-
-        /* Raghim AI Widget Styles */
-
-        .rag-widget-modern {
-
-            font-family: Inter, sans-serif;
-
-            font-size: 14px;
-
-            background-color: #ffffff;
-
-            color: #1a202c;
-
+        .instructions ol {
+            line-height: 1.8;
+        }
+        .snippet-placeholder {
+            background: #fff3cd;
+            border: 2px dashed #ffc107;
+            padding: 30px;
             border-radius: 8px;
-
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-
-            max-width: 350px;
-
-            height: 400px;
-
-            display: flex;
-
-            flex-direction: column;
-
-            overflow: hidden;
-
-            position: fixed;
-
-            bottom: 20px;
-
-            right: 20px;
-
-            z-index: 1000;
-
+            margin: 30px 0;
+            min-height: 200px;
         }
-
-        
-
-        .rag-widget-header {
-
-            background-color: #667eea;
-
-            color: white;
-
-            padding: 10px;
-
-            display: flex;
-
-            justify-content: space-between;
-
-            align-items: center;
-
-        }
-
-        
-
-        .rag-widget-header h3 {
-
-            margin: 0;
-
-            font-size: 16px;
-
-        }
-
-        
-
-        .rag-widget-controls button {
-
-            background: none;
-
-            border: none;
-
-            color: white;
-
-            cursor: pointer;
-
+        .snippet-placeholder::before {
+            content: "📋 PASTE YOUR WIDGET SNIPPET HERE";
+            display: block;
+            font-weight: bold;
+            color: #856404;
+            margin-bottom: 15px;
             font-size: 18px;
-
-            margin-left: 5px;
-
         }
-
-        
-
-        .rag-widget-messages {
-
-            flex: 1;
-
-            overflow-y: auto;
-
-            padding: 10px;
-
-            background-color: #f8f9fa;
-
-        }
-
-        
-
-        .rag-message {
-
-            margin: 10px 0;
-
-            padding: 8px 12px;
-
-            border-radius: 18px;
-
-            max-width: 80%;
-
-            white-space: pre-wrap;
-
-        }
-
-        
-
-        .rag-message.user {
-
-            background-color: #667eea;
-
-            color: white;
-
-            align-self: flex-end;
-
-            margin-left: auto;
-
-        }
-
-        
-
-        .rag-message.assistant {
-
-            background-color: white;
-
-            color: #1a202c;
-
-            border: 1px solid #e0e0e0;
-
-        }
-
-        
-
-        .rag-widget-input {
-
-            display: flex;
-
-            padding: 10px;
-
-            border-top: 1px solid #e0e0e0;
-
-        }
-
-        
-
-        .rag-widget-input input {
-
-            flex: 1;
-
-            padding: 8px 12px;
-
-            border: 1px solid #e0e0e0;
-
-            border-radius: 20px;
-
-            outline: none;
-
-        }
-
-        
-
-        .rag-widget-input button {
-
-            background-color: #667eea;
-
-            color: white;
-
-            border: none;
-
-            padding: 8px 16px;
-
-            border-radius: 20px;
-
-            margin-left: 8px;
-
-            cursor: pointer;
-
-        }
-
-        
-
-        .rag-welcome-message {
-
-            background-color: #e3f2fd;
-
-            padding: 10px;
-
-            border-radius: 8px;
-
-            margin-bottom: 10px;
-
-            white-space: pre-wrap;
-
-        }
-
-        
-
-        .rag-typing-indicator {
-
-            display: none;
-
-            padding: 10px;
-
+        .snippet-placeholder p {
+            color: #856404;
             font-style: italic;
-
-            color: #764ba2;
-
+            margin: 0;
         }
-
+        .content {
+            margin: 30px 0;
+            line-height: 1.6;
+        }
+        .note {
+            background: #d4edda;
+            border: 1px solid #c3e6cb;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+            color: #155724;
+        }
+        .note strong {
+            display: block;
+            margin-bottom: 5px;
+        }
     </style>
-
 </head>
-
 <body>
-
     <div class="container">
-
-        <header>
-
-            <h1>Raghim AI Widget Test Page</h1>
-
-            <p>Testing embeddable chatbot widget functionality</p>
-
-        </header>
-
+        <h1>Raghim AI Chat Widget - Embed Template</h1>
         
+        <div class="instructions">
+            <h2>📝 How to Add the Chatbot Widget</h2>
+            <ol>
+                <li>Go to your Raghim AI dashboard and generate the widget embed code (HTML format)</li>
+                <li>Copy the entire snippet (it starts with <code>&lt;!-- Raghim AI Chat Widget</code> and ends with <code>End of Raghim AI Chat Widget --&gt;</code>)</li>
+                <li>Paste it in the yellow box below (replace this placeholder text)</li>
+                <li>Save this file and refresh/reload the page</li>
+                <li>The chatbot icon will appear in the bottom-right corner! 🎉</li>
+            </ol>
+        </div>
+
+        <div class="note">
+            <strong>💡 Tip:</strong> The widget snippet includes all necessary CSS, HTML, and JavaScript. 
+            Just paste it anywhere in the body of your HTML page and it will work automatically.
+        </div>
+
+        <!-- ============================================ -->
+        <!-- PASTE YOUR WIDGET SNIPPET IN THE BOX BELOW -->
+        <!-- ============================================ -->
+        
+        <div class="snippet-placeholder">
+            <p>
+                Copy the widget embed code from your Raghim AI dashboard and paste it here.
+                <br><br>
+                The snippet should look like this:
+                <br>
+                <code style="background: #f0f0f0; padding: 5px; border-radius: 3px;">
+                    &lt;!-- Raghim AI Chat Widget ... --&gt;<br>
+                    &lt;style&gt;...&lt;/style&gt;<br>
+                    &lt;div id="rag-widget-..."&gt;...&lt;/div&gt;<br>
+                    &lt;script&gt;...&lt;/script&gt;<br>
+                    &lt;!-- End of Raghim AI Chat Widget --&gt;
+                </code>
+            </p>
+        </div>
+
+        <!-- ============================================ -->
+        <!-- END OF SNIPPET PLACEHOLDER                  -->
+        <!-- ============================================ -->
 
         <div class="content">
-
-            <h2>Page Content</h2>
-
-            <p>This is a test page for the Raghim AI embeddable widget.</p>
-
-            <p>The widget should appear in the bottom-right corner of this page.</p>
-
-            <p>You can interact with it to test the chatbot functionality.</p>
-
+            <h2>Sample Page Content</h2>
+            <p>
+                This is a sample HTML page to demonstrate how to embed the Raghim AI Chat Widget.
+                You can replace this content with your own website content.
+            </p>
+            <p>
+                Once you paste the widget snippet above and reload the page, you'll see the chatbot
+                widget appear in the bottom-right corner of the page.
+            </p>
+            <p>
+                The widget is fully functional and will connect to your Raghim AI backend to provide
+                intelligent chat assistance to your visitors.
+            </p>
         </div>
-
     </div>
-
-    
-
-    <!-- Raghim AI Chat Widget -->
-
-    <div id="rag-chat-widget" class="rag-widget-modern">
-
-        <div class="rag-widget-header">
-
-            <h3>test_widget</h3>
-
-            <div class="rag-widget-controls">
-
-                <button id="minimize-btn">−</button>
-
-                <button id="close-btn">×</button>
-
-            </div>
-
-        </div>
-
-        <div class="rag-widget-messages" id="messages-container">
-
-            <div class="rag-welcome-message">
-
-                <p>Hello! I'm ready to be of service.</p>
-
-            </div>
-
-        </div>
-
-        <div class="rag-widget-input">
-
-            <input type="text" id="message-input" placeholder="Type your message..." />
-
-            <button id="send-btn">Send</button>
-
-        </div>
-
-    </div>
-
-    
-
-    <!-- Raghim AI Widget Script -->
-
-    <script>
-
-        class RAGChatWidget {
-
-            constructor() {
-
-                // Auto-detect HTTPS and use appropriate API URL
-                // IMPORTANT: HTTPS endpoint (port 8081) may be blocked by firewall
-                // For HTTPS pages, we MUST use HTTPS API (browsers block HTTP from HTTPS pages)
-                const isHttps = window.location.protocol === 'https:';
-                
-                // Use test_widget embed token that we know works
-                this.embedToken = "B-J7iqj_Ll6Jc9witdYhTIAjj3a6waAzF8sXNLiLve8";
-                
-                if (isHttps) {
-                    // On HTTPS pages, MUST use HTTPS API (browsers block HTTP)
-                    // Using Cloudflare domain with valid SSL certificate
-                    this.apiUrl = "https://app.raghim.com/api";
-                    this.fallbackApiUrl = null; // Can't fallback to HTTP from HTTPS page
-                } else {
-                    // On HTTP pages, use HTTP API
-                    this.apiUrl = "http://34.65.50.3/api";
-                    this.fallbackApiUrl = null;
-                }
-
-                this.widgetId = "9f4eccee-9797-4c82-ae3a-5c73d0f952fc";
-
-                this.features = {"show_sources": true, "enable_history": true, "show_typing_indicator": true, "enable_file_upload": false, "show_collection_switcher": false, "enable_feedback": true, "show_timestamps": false, "enable_search": true, "enable_handoff": true};
-
-                this.conversationId = null;
-
-                this.isSending = false;
-
-                this.lastMessageTime = 0;
-
-                this.pollingInterval = null;
-
-                this.lastMessageCount = 0;
-
-                
-
-                console.log('Widget initialized with API URL:', this.apiUrl);
-
-                console.log('Widget initialized with embed token:', this.embedToken);
-
-                this.init();
-
-            }
-
-            
-
-            init() {
-
-                this.messageContainer = document.getElementById('messages-container');
-
-                this.messageInput = document.getElementById('message-input');
-
-                this.sendButton = document.getElementById('send-btn');
-
-                this.minimizeButton = document.getElementById('minimize-btn');
-
-                this.closeButton = document.getElementById('close-btn');
-
-                
-
-                this.bindEvents();
-
-            }
-
-            
-
-            bindEvents() {
-
-                this.sendButton.addEventListener('click', () => this.sendMessage());
-
-                this.messageInput.addEventListener('keypress', (e) => {
-
-                    if (e.key === 'Enter') this.sendMessage();
-
-                });
-
-                this.minimizeButton.addEventListener('click', () => this.minimize());
-
-                this.closeButton.addEventListener('click', () => this.close());
-
-            }
-
-            
-
-            async sendMessage() {
-
-                const message = this.messageInput.value.trim();
-
-                if (!message || this.isSending) return;
-
-                
-
-                const now = Date.now();
-
-                if (this.lastMessageTime && (now - this.lastMessageTime) < 1000) {
-
-                    console.log('Message debounced - too soon after last message');
-
-                    return;
-
-                }
-
-                this.lastMessageTime = now;
-
-                
-
-                this.isSending = true;
-
-                this.addMessage(message, 'user');
-
-                this.messageInput.value = '';
-
-                
-
-                if (this.features.show_typing_indicator) {
-
-                    this.showTypingIndicator();
-
-                }
-
-                
-
-                try {
-
-                    console.log('Sending streaming message to:', `${this.apiUrl}/chat/widget/${this.embedToken}`);
-
-                    
-
-                    // Try primary API URL first
-
-                    let response = await this.tryStreamingApiCall(`${this.apiUrl}/chat/widget/${this.embedToken}`, message);
-
-                    
-
-                    if (!response) {
-
-                        console.error('API call failed - response is null');
-                        console.error('API URL was:', `${this.apiUrl}/chat/widget/${this.embedToken}`);
-                        
-                        // Check if it's a network error or SSL issue
-                        // The error message will help diagnose
-                        this.addMessage('Sorry, I cannot connect to the server. Please check the browser console (F12) for detailed error information.', 'assistant');
-                    }
-
-                } catch (error) {
-
-                    console.error('Network Error:', error);
-
-                    this.addMessage('Sorry, I encountered an error. Please try again.', 'assistant');
-
-                } finally {
-
-                    this.isSending = false;
-
-                    if (this.features.show_typing_indicator) {
-
-                        this.hideTypingIndicator();
-
-                    }
-
-                }
-
-            }
-
-            
-
-            async tryStreamingApiCall(url, message) {
-
-                try {
-
-                    const response = await fetch(url, {
-
-                        method: 'POST',
-
-                        headers: {
-
-                            'Content-Type': 'application/json',
-
-                        },
-
-                        body: JSON.stringify({ 
-
-                            message: message,
-
-                            conversation_id: this.conversationId
-
-                        })
-
-                    });
-
-                    
-
-                    if (response.ok) {
-
-                        console.log('Streaming response started');
-
-                        await this.processStreamingResponse(response);
-
-                        return response;
-
-                    } else {
-
-                        console.log('Streaming response not ok:', response.status);
-
-                        return null;
-
-                    }
-
-                } catch (error) {
-
-                    console.error('Streaming API call failed:', error);
-                    console.error('Error name:', error.name);
-                    console.error('Error message:', error.message);
-                    console.error('Error stack:', error.stack);
-
-                    return null;
-
-                }
-
-            }
-
-            
-
-            async processStreamingResponse(response) {
-
-                const reader = response.body.getReader();
-
-                const decoder = new TextDecoder();
-
-                let buffer = '';
-
-                let fullResponse = '';
-
-                let sources = [];
-
-                let conversationId = null;
-
-                
-
-                const messageId = 'streaming-' + Date.now();
-
-                this.addStreamingMessage('', 'assistant', messageId);
-
-                
-
-                try {
-
-                    while (true) {
-
-                        const { done, value } = await reader.read();
-
-                        if (done) break;
-
-                        
-
-                        const text = decoder.decode(value, { stream: true });
-
-                        buffer += text;
-
-                        
-
-                        const lines = buffer.split('\n');
-
-                        buffer = lines.pop() || '';
-
-                        
-
-                        for (const line of lines) {
-
-                            if (line.startsWith('data: ')) {
-
-                                const content = line.slice(6).trim();
-
-                                
-
-                                if (content === '[DONE]') {
-
-                                    console.log('Streaming completed');
-
-                                    break;
-
-                                }
-
-                                
-
-                                if (content) {
-
-                                    try {
-
-                                        const data = JSON.parse(content);
-
-                                        
-
-                                        switch (data.type) {
-
-                                            case 'chunk':
-
-                                                if (data.content) {
-
-                                                    fullResponse += data.content;
-
-                                                    this.updateStreamingMessage(messageId, fullResponse);
-
-                                                }
-
-                                                break;
-
-                                            
-
-                                            case 'sources':
-
-                                                if (data.sources && Array.isArray(data.sources)) {
-
-                                                    sources = data.sources;
-
-                                                }
-
-                                                break;
-
-                                            
-
-                                            case 'complete':
-
-                                                if (data.stats && data.stats.conversation_id) {
-
-                                                    conversationId = data.stats.conversation_id;
-
-                                                    this.conversationId = conversationId;
-
-                                                    console.log('Updated conversation ID from stream:', this.conversationId);
-
-                                                    this.startMessagePolling();
-
-                                                }
-
-                                                break;
-
-                                            
-
-                                            case 'human_agent_active':
-
-                                                this.addMessage(data.message, 'assistant');
-
-                                                break;
-
-                                            
-
-                                            case 'error':
-
-                                                this.addMessage('Error: ' + data.error, 'assistant');
-
-                                                break;
-
-                                        }
-
-                                    } catch (parseError) {
-
-                                        console.error('JSON Parse Error:', parseError);
-
-                                    }
-
-                                }
-
-                            }
-
-                        }
-
-                    }
-
-                } finally {
-
-                    reader.releaseLock();
-
-                    
-
-                    if (fullResponse.trim()) {
-
-                        this.finalizeStreamingMessage(messageId, fullResponse, sources);
-
-                    } else {
-
-                        this.removeStreamingMessage(messageId);
-
-                    }
-
-                }
-
-            }
-
-            
-
-            addStreamingMessage(content, role, messageId) {
-
-                const messageDiv = document.createElement('div');
-
-                messageDiv.className = `rag-message ${role}`;
-
-                messageDiv.id = messageId;
-
-                messageDiv.textContent = content;
-
-                
-
-                if (role === 'user') {
-
-                    messageDiv.style.cssText += `
-
-                        background-color: #007bff;
-
-                        color: white;
-
-                        margin-left: auto;
-
-                        white-space: pre-wrap;
-
-                    `;
-
-                } else {
-
-                    messageDiv.style.cssText += `
-
-                        background-color: white;
-
-                        color: #333;
-
-                        border: 1px solid #e0e0e0;
-
-                        white-space: pre-wrap;
-
-                    `;
-
-                }
-
-                
-
-                this.messageContainer.appendChild(messageDiv);
-
-                this.messageContainer.scrollTop = this.messageContainer.scrollHeight;
-
-            }
-
-            
-
-            updateStreamingMessage(messageId, content) {
-
-                const messageDiv = document.getElementById(messageId);
-
-                if (messageDiv) {
-
-                    messageDiv.textContent = content;
-
-                    this.messageContainer.scrollTop = this.messageContainer.scrollHeight;
-
-                }
-
-            }
-
-            
-
-            finalizeStreamingMessage(messageId, content, sources) {
-
-                const messageDiv = document.getElementById(messageId);
-
-                if (messageDiv) {
-
-                    messageDiv.textContent = content;
-
-                    
-
-                    if (sources && this.features.show_sources && sources.length > 0) {
-
-                        const sourcesDiv = document.createElement('div');
-
-                        sourcesDiv.className = 'rag-sources';
-
-                        sourcesDiv.innerHTML = '<small>Sources: ' + sources.map(s => s.metadata.source || 'Unknown').join(', ') + '</small>';
-
-                        messageDiv.appendChild(sourcesDiv);
-
-                    }
-
-                    
-
-                    this.messageContainer.scrollTop = this.messageContainer.scrollHeight;
-
-                }
-
-            }
-
-            
-
-            removeStreamingMessage(messageId) {
-
-                const messageDiv = document.getElementById(messageId);
-
-                if (messageDiv) {
-
-                    messageDiv.remove();
-
-                }
-
-            }
-
-            
-
-            addMessage(content, role, sources = null) {
-
-                const messageDiv = document.createElement('div');
-
-                messageDiv.className = `rag-message ${role}`;
-
-                messageDiv.textContent = content;
-
-                
-
-                if (sources && this.features.show_sources && sources.length > 0) {
-
-                    const sourcesDiv = document.createElement('div');
-
-                    sourcesDiv.className = 'rag-sources';
-
-                    sourcesDiv.innerHTML = '<small>Sources: ' + sources.map(s => s.metadata.source || 'Unknown').join(', ') + '</small>';
-
-                    messageDiv.appendChild(sourcesDiv);
-
-                }
-
-                
-
-                this.messageContainer.appendChild(messageDiv);
-
-                this.messageContainer.scrollTop = this.messageContainer.scrollHeight;
-
-            }
-
-            
-
-            showTypingIndicator() {
-
-                const indicator = document.createElement('div');
-
-                indicator.className = 'rag-typing-indicator';
-
-                indicator.id = 'typing-indicator';
-
-                indicator.textContent = 'Assistant is typing...';
-
-                this.messageContainer.appendChild(indicator);
-
-                indicator.style.display = 'block';
-
-            }
-
-            
-
-            hideTypingIndicator() {
-
-                const indicator = document.getElementById('typing-indicator');
-
-                if (indicator) {
-
-                    indicator.remove();
-
-                }
-
-            }
-
-            
-
-            minimize() {
-
-                document.getElementById('rag-chat-widget').style.display = 'none';
-
-            }
-
-            
-
-            close() {
-
-                this.stopMessagePolling();
-
-                document.getElementById('rag-chat-widget').remove();
-
-            }
-
-            
-
-            startMessagePolling() {
-
-                if (this.pollingInterval || !this.conversationId) return;
-
-                
-
-                console.log('Starting message polling for conversation:', this.conversationId);
-
-                this.pollingInterval = setInterval(() => {
-
-                    this.fetchAgentMessages();
-
-                }, 3000);
-
-            }
-
-            
-
-            stopMessagePolling() {
-
-                if (this.pollingInterval) {
-
-                    clearInterval(this.pollingInterval);
-
-                    this.pollingInterval = null;
-
-                    console.log('Stopped message polling');
-
-                }
-
-            }
-
-            
-
-            async fetchAgentMessages() {
-
-                if (!this.conversationId) return;
-
-                
-
-                try {
-
-                    const response = await fetch(`${this.apiUrl}/api/live-chat/widget/conversation/${this.conversationId}/messages`, {
-
-                        method: 'GET',
-
-                        headers: {
-
-                            'Content-Type': 'application/json',
-
-                        }
-
-                    });
-
-                    
-
-                    if (response.ok) {
-
-                        const data = await response.json();
-
-                        if (data?.messages && Array.isArray(data.messages)) {
-
-                            if (data.messages.length > this.lastMessageCount) {
-
-                                this.updateMessagesFromServer(data.messages);
-
-                                this.lastMessageCount = data.messages.length;
-
-                            }
-
-                        }
-
-                    }
-
-                } catch (error) {
-
-                    console.error('Error fetching agent messages:', error);
-
-                }
-
-            }
-
-            
-
-            updateMessagesFromServer(messages) {
-
-                this.messageContainer.innerHTML = '';
-
-                
-
-                messages.forEach(msg => {
-
-                    const role = msg.role === 'user' ? 'user' : msg.role === 'assistant' ? 'assistant' : 'agent';
-
-                    this.addMessage(msg.content, role);
-
-                });
-
-                
-
-                this.messageContainer.scrollTop = this.messageContainer.scrollHeight;
-
-            }
-
-        }
-
-        
-
-        // Initialize widget
-
-        new RAGChatWidget();
-
-    </script>
-
 </body>
-
 </html>
+
