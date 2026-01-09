@@ -401,19 +401,20 @@
             constructor() {
 
                 // Auto-detect HTTPS and use appropriate API URL
-                // For HTTPS pages (GitHub Pages), try HTTPS first, fallback to HTTP
-                // For HTTP pages, use HTTP directly
+                // IMPORTANT: HTTPS endpoint (port 8081) may be blocked by firewall
+                // For HTTPS pages, we MUST use HTTPS API (browsers block HTTP from HTTPS pages)
                 const isHttps = window.location.protocol === 'https:';
                 
                 // Use test_widget embed token that we know works
                 this.embedToken = "B-J7iqj_Ll6Jc9witdYhTIAjj3a6waAzF8sXNLiLve8";
                 
-                // Try HTTPS first if on HTTPS page, but have HTTP as fallback
                 if (isHttps) {
-                    // Try HTTPS first, but will fallback to HTTP if it fails
-                    this.apiUrl = "https://34.65.50.3:8081/api";
-                    this.fallbackApiUrl = "http://34.65.50.3/api";
+                    // On HTTPS pages, MUST use HTTPS API (browsers block HTTP)
+                    // Using standard HTTPS port 443 (no port number needed)
+                    this.apiUrl = "https://34.65.50.3/api";
+                    this.fallbackApiUrl = null; // Can't fallback to HTTP from HTTPS page
                 } else {
+                    // On HTTP pages, use HTTP API
                     this.apiUrl = "http://34.65.50.3/api";
                     this.fallbackApiUrl = null;
                 }
@@ -532,26 +533,17 @@
 
                     
 
-                    // If failed and we have a fallback, try it
-
-                    if (!response && this.fallbackApiUrl) {
-
-                        console.log('Primary API failed, trying HTTP fallback...');
-
-                        this.apiUrl = this.fallbackApiUrl; // Switch to fallback for future calls
-
-                        response = await this.tryStreamingApiCall(`${this.fallbackApiUrl}/chat/widget/${this.embedToken}`, message);
-
-                    }
-
-                    
-
                     if (!response) {
 
-                        console.log('All API attempts failed');
-
-                        this.addMessage('Sorry, I encountered an error. Please try again.', 'assistant');
-
+                        console.log('API call failed');
+                        
+                        // Provide helpful error message
+                        const isHttps = window.location.protocol === 'https:';
+                        if (isHttps) {
+                            this.addMessage('Sorry, I cannot connect to the server. The HTTPS endpoint may be blocked by a firewall. Please contact the administrator to ensure port 443 is open for HTTPS access.', 'assistant');
+                        } else {
+                            this.addMessage('Sorry, I encountered an error connecting to the server. Please try again.', 'assistant');
+                        }
                     }
 
                 } catch (error) {
